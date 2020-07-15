@@ -123,9 +123,3 @@ pub fn delete_chef_profile(con:PgConnection,uid:String){
     .execute(&con)
         .expect("Error deleting user chef profile");
 }
-pub fn delete_user_order(con:PgConnection,uid:String){
-    use schema::market_products_orders::dsl::*; 
-    diesel::delete(market_products_orders.filter(user_id.eq(uid)))
-    .execute(&con)
-        .expect("Error deleting user order data");
-}

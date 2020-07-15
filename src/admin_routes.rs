@@ -43,10 +43,7 @@ pub fn delete_user_account(user_id:String) -> JsonValue{
 
     let connect2 = establish_connection();
 
-    delete_user_order(connect2,uid.to_string());
-    let connect3 = establish_connection();
-
-    return delete_user(connect3,user_id.to_string());
+    return delete_user(connect2,user_id.to_string());
 }
 
 
