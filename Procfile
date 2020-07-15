@@ -1,1 +1,1 @@
-web: ROCKET_PORT=$PORT target/release/auth_service
+web: ROCKET_PORT=$PORT target/release/admin_service
