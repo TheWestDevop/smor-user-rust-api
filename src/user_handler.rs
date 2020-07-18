@@ -42,16 +42,13 @@ pub fn login_user(con:PgConnection,user:String,password:String,app:String) -> Js
                             "user" => {
                                 json!(
                                     {
-                                    "status":false,
+                                    "status":true,
                                     "data":{
-                                        "id":results[0].id,
                                         "user_id":results[0].user_id,
                                         "name":results[0].name,
                                         "avatar":results[0].avatar,
                                         "phone":results[0].phone,
                                         "email":results[0].email,
-                                        "role":results[0].role,
-                                        "status":results[0].status,
                                         "token":token
                                     }
                                 }
