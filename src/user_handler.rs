@@ -231,3 +231,40 @@ pub fn rating_chef(con:PgConnection,n_rating:i32,uid:String) -> JsonValue {
             })
 }
 
+pub fn get_user(con:PgConnection,uid:String) -> JsonValue {
+    use schema::smor_users::dsl::*;
+
+    let results = smor_users.filter(user_id.eq(&uid))
+    .load::<User>(&con).expect("Error unable to fetch user by user_id");
+    // print!("query result  {:?}",results);
+    return json!({
+        "status": true,
+        "data":results[0]
+    })
+}
+pub fn get_chef(con:PgConnection,uid:String) -> JsonValue {
+    use schema::smor_users::dsl::*;
+    let results = smor_users.filter(schema::smor_users::dsl::user_id.eq(&uid)).load::<User>(&con).expect("Error unable to fetch user by user_id");
+    // print!("query result  {:?}",results);
+    use schema::smor_chef_profiles::dsl::*;
+    let profile_result = smor_chef_profiles.filter(schema::smor_chef_profiles::dsl::user_id.eq(&uid))
+    .load::<Chef>(&con).expect("Error unable to fetch chef profile for rating");
+    return json!(
+        {
+        "status":false,
+        "data":{
+            "id":results[0].id,
+            "user_id":results[0].user_id,
+            "name":results[0].name,
+            "avatar":results[0].avatar,
+            "phone":results[0].phone,
+            "email":results[0].email,
+            "role":results[0].role,
+            "details":profile_result[0].details,
+            "rating":profile_result[0].rating,
+            "experience":profile_result[0].experience,
+            "dish":profile_result[0].dish
+        }
+    }
+    )
+}

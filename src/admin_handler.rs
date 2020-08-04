@@ -3,17 +3,17 @@ use diesel::PgConnection;
 use crate::models::{User,UpdateUser};
 use bcrypt::{verify};
 use rocket_contrib::json::{JsonValue};
- use crate::auth::*;
+use crate::auth::*;
 use crate::schema;
 use chrono::Local;
 
 
 
-pub fn login_admin(con:PgConnection,user:String,password:String) -> JsonValue{
+pub fn login_admin(con:PgConnection,user:String,password:String) -> JsonValue {
     let clean_password = password.trim();
     let clean_email = user.trim();
 
-    print!(" email --> {} password --> {} ",clean_email,clean_password);
+    // print!(" email --> {} password --> {} ",clean_email,clean_password);
 
     if clean_password.is_empty() || clean_email.is_empty() {
         json!({

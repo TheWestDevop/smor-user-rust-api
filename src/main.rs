@@ -33,6 +33,8 @@ fn main() {
         user_routes::update_chef_bio,
         user_routes::update_profile,
         user_routes::upload_pic,
+        user_routes::see_chef,
+        user_routes::see_user,
         ])
     .mount("/api/v1/admin", routes![
         admin_routes::index,

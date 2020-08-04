@@ -63,6 +63,17 @@ pub fn rate_chef(uid:String,rating:Form<Integer>,_auth:UserApiKey) -> JsonValue 
     let connect = establish_connection();
    return rating_chef(connect,rating.number,uid);
 }
+#[get("/chef/<uid>")]
+pub fn see_chef(uid:String,_auth:UserApiKey) -> JsonValue {
+    let connect = establish_connection();
+   return get_chef(connect,uid);
+}
+#[get("/profile/<uid>")]
+pub fn see_user(uid:String,_auth:UserApiKey) -> JsonValue {
+    let connect = establish_connection();
+   return get_user(connect,uid);
+}
+
 #[post("/upload/pic/<uid>/<url>")]
 pub fn upload_pic(uid:String,url:String,_auth:UserApiKey) -> JsonValue {
     let connect = establish_connection();
