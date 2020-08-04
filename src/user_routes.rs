@@ -21,7 +21,7 @@ pub fn r_register_user(data:Form<NewUserForm>) -> JsonValue {
 #[patch("/register/chef", data="<data>")]
 pub fn r_register_chef(data:Form<NewChefForm>,_auth:UserApiKey) -> JsonValue {
     let connect = establish_connection();
-    let  chef = NewChef::new(data.user_id.to_string(),data.dish.to_string(),data.details.to_string(),data.experience.to_string());
+    let  chef = NewChef::new(data.user_id.to_string(),data.dish.to_string(),data.details.to_string(),data.icon.to_string(),data.experience.to_string());
    return register_chef_detail(connect,chef);
 }
 
@@ -51,6 +51,7 @@ pub fn update_chef_bio(data:Form<UpdateChefForm>,_auth:UserApiKey) -> JsonValue 
                                     data.dish.to_string(),
                                     data.details.to_string(),
                                     data.rating,
+                                    data.icon.to_string(),
                                     data.experience.to_string(),
                                     data.created_at.to_string()
                                 );

@@ -199,6 +199,7 @@ pub fn update_chef_profile(con:PgConnection,chef:UpdateChef)-> JsonValue {
                                                 .set((
                                                     dish.eq(&chef.dish),
                                                     details.eq(&chef.details),
+                                                    icon.eq(&chef.icon),
                                                     experience.eq(&chef.experience),
                                                     update_at.eq(&chef.update_at)
                                                 ))

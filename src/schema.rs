@@ -5,6 +5,7 @@ table! {
         dish -> Varchar,
         details -> Text,
         rating -> Int4,
+        icon -> Varchar,
         experience -> Varchar,
         created_at -> Varchar,
         update_at -> Varchar,

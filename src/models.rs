@@ -102,6 +102,7 @@ pub fn establish_connection() -> PgConnection {
       pub dish: String,
       pub details: String,
       pub rating: i32,
+      pub icon: String,
       pub experience: String,
       pub created_at: String,
       pub update_at: String,
@@ -113,18 +114,20 @@ pub fn establish_connection() -> PgConnection {
      pub user_id: String,
      pub dish: String,
      pub details: String,
+     pub icon: String,
      pub experience: String,
      pub created_at: String,
      pub update_at: String,
    } 
    impl NewChef {
-    pub fn new(user_id: String, dish: String, details: String,experience:String) -> NewChef {
+    pub fn new(user_id: String, dish: String, details: String,icon: String,experience:String) -> NewChef {
           let created_at = Local::now().to_string();
           let update_at = Local::now().to_string();
           NewChef {
            user_id,
            dish,
            details,
+           icon,
            experience,
            created_at,
            update_at,
@@ -142,12 +145,13 @@ pub fn establish_connection() -> PgConnection {
   pub dish: String,
   pub details: String,
   pub rating: i32,
+  pub icon: String,
   pub experience: String,
   pub created_at: String,
   pub update_at: String,
 }
 impl UpdateChef {
-  pub fn new(id:i32,user_id:String,dish:String,details:String,rating:i32,experience:String,created_at:String) -> UpdateChef {
+  pub fn new(id:i32,user_id:String,dish:String,details:String,rating:i32,icon: String,experience:String,created_at:String) -> UpdateChef {
     let update_at = Local::now().to_string();
     UpdateChef {
       id,
@@ -155,6 +159,7 @@ impl UpdateChef {
       dish,
       details,
       rating,
+      icon,
       experience,
       created_at,
       update_at
@@ -166,6 +171,7 @@ impl UpdateChef {
   pub user_id: String,
   pub dish: String,
   pub details: String,
+  pub icon: String,
   pub experience: String,
 }
 #[derive(FromForm,Debug)]
@@ -175,9 +181,9 @@ pub struct UpdateChefForm{
   pub dish: String,
   pub details: String,
   pub rating: i32,
+  pub icon: String,
   pub experience: String,
   pub created_at: String,
-  pub update_at: String,
 }
 #[derive(FromForm,Debug)]
 pub struct AdminLogin {

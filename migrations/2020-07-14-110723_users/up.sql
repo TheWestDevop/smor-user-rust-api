@@ -4,7 +4,7 @@ CREATE TABLE smor_users (
   user_id VARCHAR(255) NOT NULL,
   name VARCHAR(255) NOT NULL,
   phone VARCHAR(255) NOT Null,
-  avatar VARCHAR(500) NOT NULL DEFAULT 'https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairDreads01&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=ShirtCrewNeck&clotheColor=Blue03&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light',
+  avatar VARCHAR(500) NOT NULL DEFAULT 'https://img.icons8.com/color/48/000000/person-male.png',
   email VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
   role Int NOT Null DEFAULT 1,
