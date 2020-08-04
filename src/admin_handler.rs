@@ -1,13 +1,30 @@
 use diesel::prelude::*;
 use diesel::PgConnection;
-use crate::models::{User,UpdateUser};
+use crate::models::{User,UpdateUser,Chef};
 use bcrypt::{verify};
 use rocket_contrib::json::{JsonValue};
 use crate::auth::*;
 use crate::schema;
 use chrono::Local;
 
+pub fn all_users(con:PgConnection) -> JsonValue {
 
+    use schema::smor_users::dsl::*;
+
+    let results =  smor_users.load::<User>(&con).expect("Error unable to fetch user");
+    return json!({
+        "status":false,
+        "data":results
+    })
+}
+pub fn all_chef_profiles(con:PgConnection) -> JsonValue {
+    use schema::smor_chef_profiles::dsl::*;
+    let results =  smor_chef_profiles.load::<Chef>(&con).expect("Error unable to fetch chefs profile");
+    return json!({
+        "status":false,
+        "data":results
+    })
+}
 
 pub fn login_admin(con:PgConnection,user:String,password:String) -> JsonValue {
     let clean_password = password.trim();

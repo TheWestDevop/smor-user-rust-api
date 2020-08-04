@@ -4,6 +4,8 @@ use crate::models::*;
 use rocket_contrib::json::{JsonValue};
 use rocket::request::Form;
 // use crate::auth;
+use crate::auth::*;
+
 
 #[get("/",)]
 pub fn index() -> JsonValue {
@@ -13,7 +15,16 @@ pub fn index() -> JsonValue {
     })
 }
 
-
+#[get("/all/user")]
+pub fn users(_auth:NormalAdminApiKey) -> JsonValue {
+    let connect = establish_connection();
+   return all_users(connect);
+}
+#[get("/all/chefs/profiles")]
+pub fn chefs(_auth:NormalAdminApiKey) -> JsonValue {
+    let connect = establish_connection();
+   return all_chef_profiles(connect);
+}
 
 #[post("/auth", data="<data>")]
 pub fn r_login_admin(data:Form<AdminLogin>) -> JsonValue{
@@ -21,21 +32,21 @@ pub fn r_login_admin(data:Form<AdminLogin>) -> JsonValue{
    return login_admin(connect,data.email.to_string(),data.password.to_string());
 }
 #[put("/grant/revoke", data="<user_data>")]
-pub fn grant_revoke_admin(user_data:Form<UpdateUserForm>) -> JsonValue{
+pub fn grant_revoke_admin(user_data:Form<UpdateUserForm>,_auth:SuperAdminApiKey) -> JsonValue{
     let connect = establish_connection();
     let user = UpdateUser::new(user_data.id, user_data.user_id.to_string(), user_data.name.to_string(), user_data.phone.to_string(), user_data.avatar.to_string(), user_data.email.to_string(),  user_data.role, user_data.status, user_data.created_at.to_string());
    return grant_admin_and_revoke_admin(connect,user);
 }
 
 #[patch("/ban/unban", data="<user_data>")]
-pub fn ban_unban_user(user_data:Form<UpdateUserForm>) -> JsonValue{
+pub fn ban_unban_user(user_data:Form<UpdateUserForm>,_auth:SuperAdminApiKey) -> JsonValue{
     let connect = establish_connection();
     let user = UpdateUser::new(user_data.id, user_data.user_id.to_string(), user_data.name.to_string(), user_data.phone.to_string(), user_data.avatar.to_string(), user_data.email.to_string(),  user_data.role, user_data.status, user_data.created_at.to_string());
    return ban_and_unban_user(connect,user);
 }
 
 #[delete("/delete/account/<user_id>")]
-pub fn delete_user_account(user_id:String) -> JsonValue{
+pub fn delete_user_account(user_id:String,_auth:SuperAdminApiKey) -> JsonValue{
     
     let uid = &user_id;
     let connect1 = establish_connection();
@@ -45,8 +56,6 @@ pub fn delete_user_account(user_id:String) -> JsonValue{
 
     return delete_user(connect2,user_id.to_string());
 }
-
-
 
 
 #[catch(404)]

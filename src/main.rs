@@ -39,6 +39,8 @@ fn main() {
     .mount("/api/v1/admin", routes![
         admin_routes::index,
         admin_routes::r_login_admin, 
+        admin_routes::users,
+        admin_routes::chefs,
         admin_routes::ban_unban_user,
         admin_routes::delete_user_account,
         admin_routes::grant_revoke_admin     
