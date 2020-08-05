@@ -1,6 +1,6 @@
 use diesel::prelude::*;
 use diesel::PgConnection;
-use crate::models::{User,UpdateUser,Chef,NewUser,NewChef,UpdateChef};
+use crate::models::*;
 use bcrypt::{DEFAULT_COST, hash,verify};
 use rocket_contrib::json::{JsonValue};
  use crate::auth::*;
@@ -201,6 +201,8 @@ pub fn update_chef_profile(con:PgConnection,chef:UpdateChef)-> JsonValue {
                                                     details.eq(&chef.details),
                                                     icon.eq(&chef.icon),
                                                     experience.eq(&chef.experience),
+                                                    state.eq(&chef.state),
+                                                    lga.eq(&chef.lga),
                                                     update_at.eq(&chef.update_at)
                                                 ))
                                                 .get_result::<Chef>(&con)
@@ -267,4 +269,15 @@ pub fn get_chef(con:PgConnection,uid:String) -> JsonValue {
         }
     }
     )
+}
+
+pub fn search(con:PgConnection,search:Search_Chef) -> JsonValue {
+    use schema::smor_chef_profiles::dsl::*;
+    let results = smor_chef_profiles.filter(state.eq(&search.state).and(lga.eq(&search.lga)).and(dish.eq(&search.dish)))
+    .load::<Chef>(&con).expect("Error unable to fetch searched dish");
+    // print!("query result  {:?}",results);
+    return json!({
+        "status": true,
+        "data":results
+    });
 }

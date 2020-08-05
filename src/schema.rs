@@ -7,6 +7,8 @@ table! {
         rating -> Int4,
         icon -> Varchar,
         experience -> Varchar,
+        state -> Varchar,
+        lga -> Varchar,
         created_at -> Varchar,
         update_at -> Varchar,
     }

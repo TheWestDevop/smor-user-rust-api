@@ -21,7 +21,15 @@ pub fn r_register_user(data:Form<NewUserForm>) -> JsonValue {
 #[patch("/register/chef", data="<data>")]
 pub fn r_register_chef(data:Form<NewChefForm>,_auth:UserApiKey) -> JsonValue {
     let connect = establish_connection();
-    let  chef = NewChef::new(data.user_id.to_string(),data.dish.to_string(),data.details.to_string(),data.icon.to_string(),data.experience.to_string());
+    let  chef = NewChef::new(
+        data.user_id.to_string(),
+        data.dish.to_string(),
+        data.details.to_string(),
+        data.icon.to_string(),
+        data.experience.to_string(),
+        data.state.to_string(),
+        data.lga.to_string()
+    );
    return register_chef_detail(connect,chef);
 }
 
@@ -53,6 +61,8 @@ pub fn update_chef_bio(data:Form<UpdateChefForm>,_auth:UserApiKey) -> JsonValue 
                                     data.rating,
                                     data.icon.to_string(),
                                     data.experience.to_string(),
+                                    data.state.to_string(),
+                                    data.lga.to_string(),
                                     data.created_at.to_string()
                                 );
    return update_chef_profile(connect,profile);
@@ -74,8 +84,14 @@ pub fn see_user(uid:String,_auth:UserApiKey) -> JsonValue {
    return get_user(connect,uid);
 }
 
-#[post("/upload/pic/<uid>/<url>")]
+#[put("/upload/pic/<uid>/<url>")]
 pub fn upload_pic(uid:String,url:String,_auth:UserApiKey) -> JsonValue {
     let connect = establish_connection();
    return update_user_avatar(connect,url,uid);
+}
+#[post("/search/chef", data="<query>")]
+pub fn search_chef(query:Form<Search>,_auth:UserApiKey) -> JsonValue {
+    let connect = establish_connection();
+    let data = Search_Chef::new(query.state.to_string(), query.lga.to_string(), query.dish.to_string());
+   return search(connect,data);
 }

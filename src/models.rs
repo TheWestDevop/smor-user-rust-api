@@ -104,6 +104,8 @@ pub fn establish_connection() -> PgConnection {
       pub rating: i32,
       pub icon: String,
       pub experience: String,
+      pub state: String,
+      pub lga: String,
       pub created_at: String,
       pub update_at: String,
   }
@@ -116,11 +118,13 @@ pub fn establish_connection() -> PgConnection {
      pub details: String,
      pub icon: String,
      pub experience: String,
+     pub state: String,
+     pub lga: String,
      pub created_at: String,
      pub update_at: String,
    } 
    impl NewChef {
-    pub fn new(user_id: String, dish: String, details: String,icon: String,experience:String) -> NewChef {
+    pub fn new(user_id: String, dish: String, details: String,icon: String,experience:String,state: String,lga: String) -> NewChef {
           let created_at = Local::now().to_string();
           let update_at = Local::now().to_string();
           NewChef {
@@ -129,6 +133,8 @@ pub fn establish_connection() -> PgConnection {
            details,
            icon,
            experience,
+           state,
+           lga,
            created_at,
            update_at,
          }
@@ -147,11 +153,13 @@ pub fn establish_connection() -> PgConnection {
   pub rating: i32,
   pub icon: String,
   pub experience: String,
+  pub state: String,
+  pub lga: String,
   pub created_at: String,
   pub update_at: String,
 }
 impl UpdateChef {
-  pub fn new(id:i32,user_id:String,dish:String,details:String,rating:i32,icon: String,experience:String,created_at:String) -> UpdateChef {
+  pub fn new(id:i32,user_id:String,dish:String,details:String,rating:i32,icon: String,experience:String,state: String,lga: String,created_at:String) -> UpdateChef {
     let update_at = Local::now().to_string();
     UpdateChef {
       id,
@@ -161,8 +169,25 @@ impl UpdateChef {
       rating,
       icon,
       experience,
+      state,
+      lga,
       created_at,
       update_at
+    }
+  }
+}
+
+pub struct Search_Chef{
+   pub state: String,
+   pub lga: String,
+   pub dish: String
+}
+impl Search_Chef {
+  pub fn new(state:String,lga:String,dish:String) -> Search_Chef {
+    Search_Chef{
+      state,
+      lga,
+      dish
     }
   }
 }
@@ -173,6 +198,8 @@ impl UpdateChef {
   pub details: String,
   pub icon: String,
   pub experience: String,
+  pub state: String,
+  pub lga: String
 }
 #[derive(FromForm,Debug)]
 pub struct UpdateChefForm{
@@ -183,6 +210,8 @@ pub struct UpdateChefForm{
   pub rating: i32,
   pub icon: String,
   pub experience: String,
+  pub state: String,
+  pub lga: String,
   pub created_at: String,
 }
 #[derive(FromForm,Debug)]
@@ -217,6 +246,13 @@ pub struct NewUserForm{
   pub phone: String,
   pub email: String,
   pub password: String,
+}
+
+#[derive(FromForm,Debug)]
+pub struct Search{
+  pub state: String,
+  pub lga: String,
+  pub dish: String
 }
 
 #[derive(FromForm,Debug)]
