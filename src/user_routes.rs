@@ -78,6 +78,7 @@ pub fn see_chef(uid:String,_auth:UserApiKey) -> JsonValue {
     let connect = establish_connection();
    return get_chef(connect,uid);
 }
+
 #[get("/profile/<uid>")]
 pub fn see_user(uid:String,_auth:UserApiKey) -> JsonValue {
     let connect = establish_connection();
@@ -89,6 +90,7 @@ pub fn upload_pic(uid:String,url:String,_auth:UserApiKey) -> JsonValue {
     let connect = establish_connection();
    return update_user_avatar(connect,url,uid);
 }
+
 #[post("/search/chef", data="<query>")]
 pub fn search_chef(query:Form<Search>,_auth:UserApiKey) -> JsonValue {
     let connect = establish_connection();

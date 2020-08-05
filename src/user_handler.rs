@@ -273,7 +273,7 @@ pub fn get_chef(con:PgConnection,uid:String) -> JsonValue {
 
 pub fn search(con:PgConnection,search:Search_Chef) -> JsonValue {
     use schema::smor_chef_profiles::dsl::*;
-    let results = smor_chef_profiles.filter(state.eq(&search.state).and(lga.eq(&search.lga)).and(dish.eq(&search.dish)))
+    let results = smor_chef_profiles.filter(state.eq(&search.state).and(lga.eq(&search.lga)).and(dish.ilike(&search.dish)))
     .load::<Chef>(&con).expect("Error unable to fetch searched dish");
     // print!("query result  {:?}",results);
     return json!({
