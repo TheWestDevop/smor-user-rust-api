@@ -4,7 +4,7 @@ CREATE TABLE smor_users (
   user_id VARCHAR(255) NOT NULL,
   name VARCHAR(255) NOT NULL,
   phone VARCHAR(255) NOT Null,
-  avatar VARCHAR(500) NOT NULL DEFAULT 'https://img.icons8.com/color/48/000000/person-male.png',
+  avatar VARCHAR(500) NOT NULL DEFAULT 'https://api.adorable.io/avatars/285/smorfarm@adorable.io.png',
   email VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL,
   role Int NOT Null DEFAULT 1,

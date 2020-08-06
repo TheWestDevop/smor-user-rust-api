@@ -132,13 +132,14 @@ pub fn register_user(con:PgConnection,n_name:String,n_phone:String,n_email:Strin
     if results.len().eq(&0) {
         use schema::smor_users;
         let new_user = NewUser::new(n_name, n_phone, n_email, n_password);
+        
         let result = diesel::insert_into(smor_users::table)
                                                 .values(new_user)
                                                 .get_result::<User>(&con)
                                                 .expect("Error creating new user"); 
         json!({
              "status":true,
-             "data":result
+             "data":"Hurray!!!,Your Account Has Been Created Successfully"
             })
     }else{
         json!({
