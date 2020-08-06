@@ -197,6 +197,7 @@ pub fn update_chef_profile(con:PgConnection,chef:UpdateChef)-> JsonValue {
     use schema::smor_chef_profiles::dsl::*;
     let results = diesel::update(&chef)
                                                 .set((
+                                                    nickname.eq(&chef.nickname),
                                                     dish.eq(&chef.dish),
                                                     details.eq(&chef.details),
                                                     icon.eq(&chef.icon),
@@ -258,6 +259,7 @@ pub fn get_chef(con:PgConnection,uid:String) -> JsonValue {
             "id":results[0].id,
             "user_id":results[0].user_id,
             "name":results[0].name,
+            "nickname":profile_result[0].nickname,
             "avatar":results[0].avatar,
             "phone":results[0].phone,
             "email":results[0].email,

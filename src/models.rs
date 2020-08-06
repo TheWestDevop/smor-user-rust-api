@@ -99,6 +99,7 @@ pub fn establish_connection() -> PgConnection {
   pub struct Chef{
       pub id: i32,
       pub user_id: String,
+      pub nickname: String,
       pub dish: String,
       pub details: String,
       pub rating: i32,
@@ -114,6 +115,7 @@ pub fn establish_connection() -> PgConnection {
   #[table_name="smor_chef_profiles"]
    pub struct NewChef{
      pub user_id: String,
+     pub nickname: String,
      pub dish: String,
      pub details: String,
      pub icon: String,
@@ -124,11 +126,12 @@ pub fn establish_connection() -> PgConnection {
      pub update_at: String,
    } 
    impl NewChef {
-    pub fn new(user_id: String, dish: String, details: String,icon: String,experience:String,state: String,lga: String) -> NewChef {
+    pub fn new(user_id: String,nickname: String, dish: String, details: String,icon: String,experience:String,state: String,lga: String) -> NewChef {
           let created_at = Local::now().to_string();
           let update_at = Local::now().to_string();
           NewChef {
            user_id,
+           nickname,
            dish,
            details,
            icon,
@@ -148,6 +151,7 @@ pub fn establish_connection() -> PgConnection {
  pub struct UpdateChef{
   pub id: i32,
   pub user_id: String,
+  pub nickname: String,
   pub dish: String,
   pub details: String,
   pub rating: i32,
@@ -159,11 +163,12 @@ pub fn establish_connection() -> PgConnection {
   pub update_at: String,
 }
 impl UpdateChef {
-  pub fn new(id:i32,user_id:String,dish:String,details:String,rating:i32,icon: String,experience:String,state: String,lga: String,created_at:String) -> UpdateChef {
+  pub fn new(id:i32,user_id:String,nickname: String,dish:String,details:String,rating:i32,icon: String,experience:String,state: String,lga: String,created_at:String) -> UpdateChef {
     let update_at = Local::now().to_string();
     UpdateChef {
       id,
       user_id,
+      nickname,
       dish,
       details,
       rating,
@@ -194,6 +199,7 @@ impl Search_Chef {
 #[derive(FromForm,Debug)]
  pub struct NewChefForm{
   pub user_id: String,
+  pub nickname: String,
   pub dish: String,
   pub details: String,
   pub icon: String,
@@ -205,6 +211,7 @@ impl Search_Chef {
 pub struct UpdateChefForm{
   pub id: i32,
   pub user_id: String,
+  pub nickname: String,
   pub dish: String,
   pub details: String,
   pub rating: i32,

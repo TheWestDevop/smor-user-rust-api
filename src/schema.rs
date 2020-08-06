@@ -2,6 +2,7 @@ table! {
     smor_chef_profiles (id) {
         id -> Int4,
         user_id -> Varchar,
+        nickname -> Varchar,
         dish -> Varchar,
         details -> Text,
         rating -> Int4,
