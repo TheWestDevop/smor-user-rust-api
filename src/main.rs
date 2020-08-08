@@ -36,6 +36,8 @@ fn main() {
         user_routes::see_chef,
         user_routes::see_user,
         user_routes::search_chef,
+        user_routes::search_chef_nickname,
+        user_routes::availability_status
         ])
     .mount("/api/v1/admin", routes![
         admin_routes::index,

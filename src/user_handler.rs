@@ -123,7 +123,6 @@ pub fn login_user(con:PgConnection,user:String,password:String,app:String) -> Js
     }
   }
 }
-
 pub fn register_user(con:PgConnection,n_name:String,n_phone:String,n_email:String,pass:String)-> JsonValue {
     use schema::smor_users::dsl::*;
     let n_password =  hash(pass, DEFAULT_COST).unwrap();
@@ -148,7 +147,6 @@ pub fn register_user(con:PgConnection,n_name:String,n_phone:String,n_email:Strin
            })
     }  
 }
-
 pub fn register_chef_detail(con:PgConnection,chef:NewChef) -> JsonValue {
     use schema::smor_chef_profiles;
     let result = diesel::insert_into(smor_chef_profiles::table)
@@ -160,7 +158,6 @@ pub fn register_chef_detail(con:PgConnection,chef:NewChef) -> JsonValue {
          "data":result
      })                       
 }
-
 pub fn update_user_profile(con:PgConnection,user:UpdateUser) -> JsonValue {
     use schema::smor_users::dsl::*;
 
@@ -178,7 +175,6 @@ pub fn update_user_profile(con:PgConnection,user:UpdateUser) -> JsonValue {
                 "data":results
             })
 }
-
 pub fn update_user_avatar(con:PgConnection,url:String,uid:String) -> JsonValue {
     use schema::smor_users::dsl::*;
 
@@ -193,7 +189,6 @@ pub fn update_user_avatar(con:PgConnection,url:String,uid:String) -> JsonValue {
                 "data":"Profile Picture Uploaded successfully"
             })
 }
-
 pub fn update_chef_profile(con:PgConnection,chef:UpdateChef)-> JsonValue {
     use schema::smor_chef_profiles::dsl::*;
     let results = diesel::update(&chef)
@@ -219,7 +214,19 @@ pub fn update_chef_profile(con:PgConnection,chef:UpdateChef)-> JsonValue {
                 "data":results
             })
 }
-
+pub fn disable_enable_availability(con:PgConnection,uid:String,status:bool)-> JsonValue {
+    use schema::smor_chef_profiles::dsl::*;
+    diesel::update(smor_chef_profiles.filter(user_id.eq(&uid)))
+                                                .set((
+                                                    availability_status.eq(&status),
+                                                ))
+                                                .execute(&con)
+                                                .expect("Error updating chef profile");
+    json!({
+                "status": true,
+                "data":"Availability Status Updated"
+            })
+}
 pub fn rating_chef(con:PgConnection,n_rating:i32,uid:String) -> JsonValue {
     // use schema::smor_users::dsl::*;
     use schema::smor_chef_profiles::dsl::*;
@@ -239,7 +246,6 @@ pub fn rating_chef(con:PgConnection,n_rating:i32,uid:String) -> JsonValue {
                 "data":"Chef rating was successfully"
             })
 }
-
 pub fn get_user(con:PgConnection,uid:String) -> JsonValue {
     use schema::smor_users::dsl::*;
 
@@ -286,10 +292,19 @@ pub fn get_chef(con:PgConnection,uid:String) -> JsonValue {
     }
     )
 }
-
 pub fn search(con:PgConnection,search:Search_Chef) -> JsonValue {
     use schema::smor_chef_profiles::dsl::*;
-    let results = smor_chef_profiles.filter(state.eq(&search.state).and(lga.eq(&search.lga)).and(dish.ilike(&search.dish).and(verification_status.eq(true))))
+    let results = smor_chef_profiles.filter(state.eq(&search.state).and(lga.eq(&search.lga)).and(dish.ilike(&search.dish).and(verification_status.eq(true)).and(availability_status.eq(true))))
+    .load::<Chef>(&con).expect("Error unable to fetch searched dish");
+    // print!("query result  {:?}",results);
+    return json!({
+        "status": true,
+        "data":results
+    });
+}
+pub fn search_by_nickname(con:PgConnection,name:String) -> JsonValue {
+    use schema::smor_chef_profiles::dsl::*;
+    let results = smor_chef_profiles.filter(nickname.ilike(&name).and(verification_status.eq(true)).and(availability_status.eq(true)))
     .load::<Chef>(&con).expect("Error unable to fetch searched dish");
     // print!("query result  {:?}",results);
     return json!({

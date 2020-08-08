@@ -13,6 +13,7 @@ CREATE TABLE smor_chef_profiles (
   state VARCHAR(255) NOT NULL,
   lga VARCHAR(255) NOT NULL,
   verification_status boolean NOT NULL DEFAULT false,
+  availability_status boolean NOT NULL DEFAULT false,
   next_of_kin_full_name VARCHAR(255) NOT NULL,
   next_of_kin_address VARCHAR(255) NOT NULL,
   next_of_kin_phone VARCHAR(255) NOT NULL,

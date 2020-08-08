@@ -110,3 +110,13 @@ pub fn search_chef(query:Form<Search>,_auth:UserApiKey) -> JsonValue {
     let data = Search_Chef::new(query.state.to_string(), query.lga.to_string(), query.dish.to_string());
    return search(connect,data);
 }
+#[get("/search/chef/<nick_name>")]
+pub fn search_chef_nickname(nick_name:String,_auth:UserApiKey) -> JsonValue {
+    let connect = establish_connection();
+   return search_by_nickname(connect,nick_name);
+}
+#[get("/change/chef/<user_id>/status/<status>")]
+pub fn availability_status(user_id:String,status:bool,_auth:UserApiKey) -> JsonValue {
+    let connect = establish_connection();
+   return disable_enable_availability(connect,user_id,status);
+}

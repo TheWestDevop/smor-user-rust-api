@@ -12,6 +12,7 @@ table! {
         state -> Varchar,
         lga -> Varchar,
         verification_status -> Bool,
+        availability_status -> Bool,
         next_of_kin_full_name -> Varchar,
         next_of_kin_address -> Varchar,
         next_of_kin_phone -> Varchar,

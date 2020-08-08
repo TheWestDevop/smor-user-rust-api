@@ -109,6 +109,7 @@ pub fn establish_connection() -> PgConnection {
       pub state: String,
       pub lga: String,
       pub verification_status:bool,
+      pub availability_status:bool,
       pub next_of_kin_full_name : String,
       pub next_of_kin_address : String,
       pub next_of_kin_phone : String,
