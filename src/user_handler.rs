@@ -133,9 +133,9 @@ pub fn register_user(con:PgConnection,n_name:String,n_phone:String,n_email:Strin
         use schema::smor_users;
         let new_user = NewUser::new(n_name, n_phone, n_email, n_password);
         
-        let result = diesel::insert_into(smor_users::table)
+        diesel::insert_into(smor_users::table)
                                                 .values(new_user)
-                                                .get_result::<User>(&con)
+                                                .execute(&con)
                                                 .expect("Error creating new user"); 
         json!({
              "status":true,
@@ -200,11 +200,16 @@ pub fn update_chef_profile(con:PgConnection,chef:UpdateChef)-> JsonValue {
                                                 .set((
                                                     nickname.eq(&chef.nickname),
                                                     dish.eq(&chef.dish),
+                                                    dish_cost.eq(&chef.dish_cost),
                                                     details.eq(&chef.details),
                                                     icon.eq(&chef.icon),
                                                     experience.eq(&chef.experience),
                                                     state.eq(&chef.state),
                                                     lga.eq(&chef.lga),
+                                                    next_of_kin_full_name.eq(&chef.next_of_kin_full_name),
+                                                    next_of_kin_address.eq(&chef.next_of_kin_address),
+                                                    next_of_kin_phone.eq(&chef.next_of_kin_phone),
+                                                    next_of_kin_relationship.eq(&chef.next_of_kin_relationship),
                                                     update_at.eq(&chef.update_at)
                                                 ))
                                                 .get_result::<Chef>(&con)
@@ -265,10 +270,18 @@ pub fn get_chef(con:PgConnection,uid:String) -> JsonValue {
             "phone":results[0].phone,
             "email":results[0].email,
             "role":results[0].role,
+            "verification_status":profile_result[0].verification_status,
             "details":profile_result[0].details,
             "rating":profile_result[0].rating,
             "experience":profile_result[0].experience,
-            "dish":profile_result[0].dish
+            "dish":profile_result[0].dish,
+            "dish_cost":profile_result[0].dish_cost,
+            "next_of_kin_full_name":profile_result[0].next_of_kin_full_name,
+            "next_of_kin_address":profile_result[0].next_of_kin_address,
+            "next_of_kin_phone":profile_result[0].next_of_kin_phone,
+            "next_of_kin_relationship":profile_result[0].next_of_kin_relationship,
+            "created_at":profile_result[0].created_at,
+            "updated_at":profile_result[0].update_at
         }
     }
     )
@@ -276,7 +289,7 @@ pub fn get_chef(con:PgConnection,uid:String) -> JsonValue {
 
 pub fn search(con:PgConnection,search:Search_Chef) -> JsonValue {
     use schema::smor_chef_profiles::dsl::*;
-    let results = smor_chef_profiles.filter(state.eq(&search.state).and(lga.eq(&search.lga)).and(dish.ilike(&search.dish)))
+    let results = smor_chef_profiles.filter(state.eq(&search.state).and(lga.eq(&search.lga)).and(dish.ilike(&search.dish).and(verification_status.eq(true))))
     .load::<Chef>(&con).expect("Error unable to fetch searched dish");
     // print!("query result  {:?}",results);
     return json!({

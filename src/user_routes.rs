@@ -25,11 +25,17 @@ pub fn r_register_chef(data:Form<NewChefForm>,_auth:UserApiKey) -> JsonValue {
         data.user_id.to_string(),
         data.nickname.to_string(),
         data.dish.to_string(),
+        data.dish_cost.to_string(),
         data.details.to_string(),
         data.icon.to_string(),
         data.experience.to_string(),
         data.state.to_string(),
-        data.lga.to_string()
+        data.lga.to_string(),
+        data.next_of_kin_full_name.to_string(),
+        data.next_of_kin_address.to_string(),
+        data.next_of_kin_phone.to_string(),
+        data.next_of_kin_relationship.to_string(),
+
     );
    return register_chef_detail(connect,chef);
 }
@@ -59,12 +65,17 @@ pub fn update_chef_bio(data:Form<UpdateChefForm>,_auth:UserApiKey) -> JsonValue 
                                     data.user_id.to_string(),
                                     data.nickname.to_string(),
                                     data.dish.to_string(),
-                                    data.details.to_string(),
+                                    data.dish.to_string(),
+                                    data.dish_cost.to_string(),
                                     data.rating,
                                     data.icon.to_string(),
                                     data.experience.to_string(),
                                     data.state.to_string(),
                                     data.lga.to_string(),
+                                    data.next_of_kin_full_name.to_string(),
+                                    data.next_of_kin_address.to_string(),
+                                    data.next_of_kin_phone.to_string(),
+                                    data.next_of_kin_relationship.to_string(),
                                     data.created_at.to_string()
                                 );
    return update_chef_profile(connect,profile);
