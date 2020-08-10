@@ -14,18 +14,9 @@ use std::env;
 
 
 
-pub fn sendMail2User(email:String,name:String,subject:String,body:String) -> Result<lettre::smtp::response::Response, lettre::smtp::error::Error>{
-    // let email = Email::builder()
-    // // Addresses can be specified by the tuple (email, alias)
-    // .to((email,&name))
-    // // ... or by an address only
-    // .from("oyeniyiadedayo@gmail.com")
-    // .subject(subject)
-    // .alternative("
-    // <h3>hi &name</h3>
-    // <p>&body</p>
-    // ",&body)
-    // .build();
+pub fn sendMail2User(email:String,subject:String,body:String) -> Result<lettre::smtp::response::Response, lettre::smtp::error::Error>{
+
+    dotenv().ok();
     let GMAIL_ACCOUNT = env::var("GMAIL_ACCOUNT").expect("Error loading GMAIL_ACCOUNT. \n Company email is required!!! .");
     let GMAIL_PASSWORD = env::var("GMAIL_PASSWORD").expect("Error loading GMAIL_PASSWORD. \n Company email password is required!!! .");
 
@@ -60,7 +51,9 @@ pub fn sendMail2User(email:String,name:String,subject:String,body:String) -> Res
         .transport();
 
     let result = mailer.send(email);
+    mailer.close();
     return result;
+    // assert!(result.is_ok());
 }
 
 pub fn login_user(con:PgConnection,user:String,password:String,app:String) -> JsonValue{
@@ -94,6 +87,15 @@ pub fn login_user(con:PgConnection,user:String,password:String,app:String) -> Js
                         let token = generate_token(&user,&iat,&u_role);
                         match clean_app.as_str() {
                             "user" => {
+                                let mail_user = sendMail2User(
+                                    results[0].email.to_string(),
+                                    "Account Login".to_string(),
+                                    "Your smorfarm account has been logged in".to_string()
+                                );
+                                match mail_user {
+                                    Ok(res) => println!("mail sent to user with response {:?}",res),
+                                    Err(err) => println!("mail error {:?}",err)
+                                };
                                 json!(
                                     {
                                     "status":true,
