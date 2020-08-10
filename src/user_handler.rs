@@ -41,7 +41,7 @@ pub fn sendMail2User(email:String,subject:String,body:String) -> Result<lettre::
         );
 
     let mut mailer = SmtpClient::new(
-        ("smtp.gmail.com", 587), ClientSecurity::Wrapper(tls_parameters)
+        ("smtp.gmail.com", 465), ClientSecurity::Wrapper(tls_parameters)
     ).unwrap()
         .authentication_mechanism(Mechanism::Login)
         .credentials(Credentials::new(
