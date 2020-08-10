@@ -5,7 +5,7 @@ WORKDIR /smor_user
 COPY .env .env
 COPY Rocket.toml Rocket.toml
 COPY diesel.toml diesel.toml
-COPY secret.key secret.key
+
 COPY . .
 
 # RUN rustup default nightly
@@ -34,10 +34,9 @@ COPY --from=builder /smor_user/target/release/admin_service ./
 
 COPY --from=builder /smor_user/Rocket.toml .
 COPY --from=builder /smor_user/diesel.toml .
-COPY --from=builder /smor_user/secret.key .
 COPY --from=builder /smor_user/.env .
 
 
-EXPOSE 8001
+EXPOSE 8000
 
 ENTRYPOINT [ "/smor_user/admin_service" ]
