@@ -6,8 +6,62 @@ use rocket_contrib::json::{JsonValue};
  use crate::auth::*;
 use crate::schema;
 use chrono::Local;
+use lettre::*;
+use smtp::{ConnectionReuseParameters, authentication::*};
+use native_tls::{Protocol, TlsConnector};
+use dotenv::dotenv;
+use std::env;
 
 
+
+pub fn sendMail2User(email:String,name:String,subject:String,body:String) -> Result<lettre::smtp::response::Response, lettre::smtp::error::Error>{
+    // let email = Email::builder()
+    // // Addresses can be specified by the tuple (email, alias)
+    // .to((email,&name))
+    // // ... or by an address only
+    // .from("oyeniyiadedayo@gmail.com")
+    // .subject(subject)
+    // .alternative("
+    // <h3>hi &name</h3>
+    // <p>&body</p>
+    // ",&body)
+    // .build();
+    let GMAIL_ACCOUNT = env::var("GMAIL_ACCOUNT").expect("Error loading GMAIL_ACCOUNT. \n Company email is required!!! .");
+    let GMAIL_PASSWORD = env::var("GMAIL_PASSWORD").expect("Error loading GMAIL_PASSWORD. \n Company email password is required!!! .");
+
+
+    let email = SendableEmail::new(
+        Envelope::new(
+            Some(EmailAddress::new("oyeniyiadedayo@gmail.com".to_string()).unwrap()),
+            vec![EmailAddress::new(email.to_string()).unwrap()],
+        ).unwrap(),
+        subject.to_string(),
+        body.to_string().into_bytes(),
+    );
+
+
+
+    let mut tls_builder = TlsConnector::builder();
+    tls_builder.min_protocol_version(Some(Protocol::Tlsv10));
+    let tls_parameters =
+        ClientTlsParameters::new(
+            "smtp.gmail.com".to_string(),
+            tls_builder.build().unwrap()
+        );
+
+    let mut mailer = SmtpClient::new(
+        ("smtp.gmail.com", 465), ClientSecurity::Wrapper(tls_parameters)
+    ).unwrap()
+        .authentication_mechanism(Mechanism::Login)
+        .credentials(Credentials::new(
+            GMAIL_ACCOUNT.to_string(), GMAIL_PASSWORD.to_string()
+        ))
+        .connection_reuse(ConnectionReuseParameters::ReuseUnlimited)
+        .transport();
+
+    let result = mailer.send(email);
+    return result;
+}
 
 pub fn login_user(con:PgConnection,user:String,password:String,app:String) -> JsonValue{
     let clean_password = password.trim();

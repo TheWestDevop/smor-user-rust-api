@@ -11,6 +11,10 @@ extern crate jwt;
 extern crate hmac;
 extern crate sha2;
 extern crate bcrypt;
+extern crate lettre_email;
+extern crate lettre;
+extern crate native_tls;
+
 
 mod schema;
 
