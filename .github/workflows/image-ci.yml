@@ -20,7 +20,7 @@ jobs:
               docker login -u $DOCKER_USER -p $DOCKER_ACCESS_KEY
     - name: Build the Docker image
       run: |
-              docker build . --tag thewestdevop/smorfarm_user_services:$(date +%s)
+              docker build . -t thewestdevop/smorfarm_user_services
     - name: Pushing the Docker image
       run: |
-              docker push thewestdevop/smor_user:$(date +%s)
+              docker push thewestdevop/smorfarm_user_services
