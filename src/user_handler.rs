@@ -17,13 +17,13 @@ use std::env;
 pub fn sendMail2User(email:String,subject:String,body:String) -> Result<lettre::smtp::response::Response, lettre::smtp::error::Error>{
 
     dotenv().ok();
-    let GMAIL_ACCOUNT = env::var("GMAIL_ACCOUNT").expect("Error loading GMAIL_ACCOUNT. \n Company email is required!!! .");
-    let GMAIL_PASSWORD = env::var("GMAIL_PASSWORD").expect("Error loading GMAIL_PASSWORD. \n Company email password is required!!! .");
+    let MAIL_ACCOUNT = env::var("MAIL_ACCOUNT").expect("Error loading GMAIL_ACCOUNT. \n Company email is required!!! .");
+    let MAIL_PASSWORD = env::var("MAIL_PASSWORD").expect("Error loading GMAIL_PASSWORD. \n Company email password is required!!! .");
 
 
     let email = SendableEmail::new(
         Envelope::new(
-            Some(EmailAddress::new("oyeniyiadedayo@gmail.com".to_string()).unwrap()),
+            Some(EmailAddress::new("no-reply@bloomrydes.com".to_string()).unwrap()),
             vec![EmailAddress::new(email.to_string()).unwrap()],
         ).unwrap(),
         subject.to_string(),
@@ -36,16 +36,16 @@ pub fn sendMail2User(email:String,subject:String,body:String) -> Result<lettre::
     tls_builder.min_protocol_version(Some(Protocol::Tlsv10));
     let tls_parameters =
         ClientTlsParameters::new(
-            "smtp.gmail.com".to_string(),
+            "mail.bloomrydes.com".to_string(),
             tls_builder.build().unwrap()
         );
 
     let mut mailer = SmtpClient::new(
-        ("smtp.gmail.com", 587), ClientSecurity::Wrapper(tls_parameters)
+        ("mail.bloomrydes.com", 587), ClientSecurity::Wrapper(tls_parameters)
     ).unwrap()
         .authentication_mechanism(Mechanism::Login)
         .credentials(Credentials::new(
-            GMAIL_ACCOUNT.to_string(), GMAIL_PASSWORD.to_string()
+            MAIL_ACCOUNT.to_string(), MAIL_PASSWORD.to_string()
         ))
         .connection_reuse(ConnectionReuseParameters::ReuseUnlimited)
         .transport();
