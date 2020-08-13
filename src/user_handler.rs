@@ -196,19 +196,20 @@ pub fn register_user(con:PgConnection,n_name:String,n_phone:String,n_email:Strin
         
             let iat = Local::now().to_string();
             let user = format!("{}{}{}",result.name,result.email,result.user_id).to_string();
-            let u_role =  &results[0].role.to_string();
+            let u_role =  &result.role.to_string();
             let token = generate_token(&user,&iat,&u_role);
-        
-            json!({
-             "status":true,
-             "data":json!({
+            let user  = json!({
                 "user_id":result.user_id,
                 "name":result.name,
                 "phone":result.phone,
                 "avatar":result.avatar,
                 "email":result.email,
                 "token":token,
-             })
+             });
+
+            json!({
+             "status":true,
+             "data":user
             })
     }else{
         json!({
