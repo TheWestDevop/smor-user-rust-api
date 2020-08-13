@@ -188,13 +188,27 @@ pub fn register_user(con:PgConnection,n_name:String,n_phone:String,n_email:Strin
         use schema::smor_users;
         let new_user = NewUser::new(n_name, n_phone, n_email, n_password);
         
-        diesel::insert_into(smor_users::table)
+       let result =  diesel::insert_into(smor_users::table)
                                                 .values(new_user)
-                                                .execute(&con)
+                                                .get_result::<User>(&con)
                                                 .expect("Error creating new user"); 
-        json!({
+
+        
+            let iat = Local::now().to_string();
+            let user = format!("{}{}{}",result.name,result.email,result.user_id).to_string();
+            let u_role =  &results[0].role.to_string();
+            let token = generate_token(&user,&iat,&u_role);
+        
+            json!({
              "status":true,
-             "data":"Hurray!!!,Your Account Has Been Created Successfully"
+             "data":json!({
+                "user_id":result.user_id,
+                "name":result.name,
+                "phone":result.phone,
+                "avatar":result.avatar,
+                "email":result.email,
+                "token":token,
+             })
             })
     }else{
         json!({
@@ -319,7 +333,7 @@ pub fn get_chef(con:PgConnection,uid:String) -> JsonValue {
     // print!("query result  {:?}",results);
     use schema::smor_chef_profiles::dsl::*;
     let profile_result = smor_chef_profiles.filter(schema::smor_chef_profiles::dsl::user_id.eq(&uid))
-    .load::<Chef>(&con).expect("Error unable to fetch chef profile for rating");
+    .load::<Chef>(&con).expect("Error unable to fetch chef profile");
     return json!(
         {
         "status":false,
