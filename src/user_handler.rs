@@ -138,7 +138,7 @@ pub fn login_user(con:PgConnection,user:String,password:String,app:String) -> Js
                                 } else {
                                     json!(
                                         {
-                                        "status":false,
+                                        "status":true,
                                         "data":{
                                             "id":results[0].id,
                                             "user_id":results[0].user_id,
