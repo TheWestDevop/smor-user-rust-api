@@ -152,7 +152,16 @@ pub fn login_user(con:PgConnection,user:String,password:String,app:String) -> Js
                                             "details":profile_result[0].details,
                                             "rating":profile_result[0].rating,
                                             "experience":profile_result[0].experience,
-                                            "dish":profile_result[0].dish
+                                            "next_of_kin_full_name":profile_result[0].next_of_kin_full_name,
+                                            "next_of_kin_address":profile_result[0].next_of_kin_address,
+                                            "next_of_kin_phone":profile_result[0].next_of_kin_phone,
+                                            "next_of_kin_relationship":profile_result[0].next_of_kin_relationship,
+                                            "state":profile_result[0].state,
+                                            "lga":profile_result[0].lga,
+                                            "icon":profile_result[0].icon,
+                                            "availability_status":profile_result[0].availability_status,
+                                            "verification_status":profile_result[0].verification_status,
+                        
                                         }
                                     }
                                     )
