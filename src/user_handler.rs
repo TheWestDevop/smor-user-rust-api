@@ -128,10 +128,21 @@ pub fn login_user(con:PgConnection,user:String,password:String,app:String) -> Js
                                             "role":results[0].role,
                                             "status":results[0].status,
                                             "token":token,
+                                            "nickname":"",
+                                            "dish":"",
+                                            "dish_cost":"",
                                             "details":"",
                                             "rating":"",
                                             "experience":"",
-                                            "dish":""
+                                            "next_of_kin_full_name":"",
+                                            "next_of_kin_address":"",
+                                            "next_of_kin_phone":"",
+                                            "next_of_kin_relationship":"",
+                                            "state":"",
+                                            "lga":"",
+                                            "icon":"",
+                                            "availability_status":"",
+                                            "verification_status":"",
                                         }
                                     }
                                 )
@@ -149,6 +160,9 @@ pub fn login_user(con:PgConnection,user:String,password:String,app:String) -> Js
                                             "role":results[0].role,
                                             "status":results[0].status,
                                             "token":token,
+                                            "nickname":profile_result[0].nickname,
+                                            "dish":profile_result[0].dish,
+                                            "dish_cost":profile_result[0].dish_cost,
                                             "details":profile_result[0].details,
                                             "rating":profile_result[0].rating,
                                             "experience":profile_result[0].experience,
