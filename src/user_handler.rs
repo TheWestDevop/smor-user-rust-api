@@ -132,7 +132,7 @@ pub fn login_user(con:PgConnection,user:String,password:String,app:String) -> Js
                                             "dish":"",
                                             "dish_cost":"",
                                             "details":"",
-                                            "rating":"",
+                                            "rating":0,
                                             "experience":"",
                                             "next_of_kin_full_name":"",
                                             "next_of_kin_address":"",
