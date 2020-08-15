@@ -141,8 +141,8 @@ pub fn login_user(con:PgConnection,user:String,password:String,app:String) -> Js
                                             "state":"",
                                             "lga":"",
                                             "icon":"",
-                                            "availability_status":"",
-                                            "verification_status":"",
+                                            "availability_status":false,
+                                            "verification_status":false,
                                         }
                                     }
                                 )
