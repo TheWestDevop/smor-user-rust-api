@@ -289,16 +289,11 @@ pub fn update_chef_profile(con:PgConnection,chef:UpdateChef)-> JsonValue {
                                                 .set((
                                                     nickname.eq(&chef.nickname),
                                                     dish.eq(&chef.dish),
-                                                    dish_cost.eq(&chef.dish_cost),
                                                     details.eq(&chef.details),
                                                     icon.eq(&chef.icon),
                                                     experience.eq(&chef.experience),
                                                     state.eq(&chef.state),
                                                     lga.eq(&chef.lga),
-                                                    next_of_kin_full_name.eq(&chef.next_of_kin_full_name),
-                                                    next_of_kin_address.eq(&chef.next_of_kin_address),
-                                                    next_of_kin_phone.eq(&chef.next_of_kin_phone),
-                                                    next_of_kin_relationship.eq(&chef.next_of_kin_relationship),
                                                     update_at.eq(&chef.update_at)
                                                 ))
                                                 .get_result::<Chef>(&con)

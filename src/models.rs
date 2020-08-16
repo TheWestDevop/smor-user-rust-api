@@ -184,18 +184,12 @@ pub fn establish_connection() -> PgConnection {
   pub user_id: String,
   pub nickname: String,
   pub dish: String,
-  pub dish_cost: String,
   pub details: String,
   pub rating: i32,
   pub icon: String,
   pub experience: String,
   pub state: String,
   pub lga: String,
-  pub next_of_kin_full_name : String,
-  pub next_of_kin_address : String,
-  pub next_of_kin_phone : String,
-  pub next_of_kin_relationship : String,
-  pub created_at: String,
   pub update_at: String,
 }
 impl UpdateChef {
@@ -204,18 +198,12 @@ impl UpdateChef {
     user_id:String,
     nickname: String,
     dish:String,
-    dish_cost:String,
     details:String,
     rating:i32,
     icon: String,
     experience:String,
     state: String,
     lga: String,
-    next_of_kin_full_name : String,
-    next_of_kin_address : String,
-    next_of_kin_phone : String,
-    next_of_kin_relationship : String,
-    created_at:String
   ) -> UpdateChef {
     let update_at = Local::now().to_string();
     UpdateChef {
@@ -223,18 +211,12 @@ impl UpdateChef {
       user_id,
       nickname,
       dish,
-      dish_cost,
       details,
       rating,
       icon,
       experience,
       state,
       lga,
-      next_of_kin_full_name,
-      next_of_kin_address,
-      next_of_kin_phone,
-      next_of_kin_relationship,
-      created_at,
       update_at
     }
   }
@@ -276,18 +258,12 @@ pub struct UpdateChefForm{
   pub user_id: String,
   pub nickname: String,
   pub dish: String,
-  pub dish_cost: String,
   pub details: String,
   pub rating: i32,
   pub icon: String,
   pub experience: String,
   pub state: String,
   pub lga: String,
-  pub next_of_kin_full_name : String,
-  pub next_of_kin_address : String,
-  pub next_of_kin_phone : String,
-  pub next_of_kin_relationship : String,
-  pub created_at: String,
 }
 #[derive(FromForm,Debug)]
 pub struct AdminLogin {
