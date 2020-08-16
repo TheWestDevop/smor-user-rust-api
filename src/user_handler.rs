@@ -285,7 +285,7 @@ pub fn update_user_avatar(con:PgConnection,url:String,uid:String) -> JsonValue {
 }
 pub fn update_chef_profile(con:PgConnection,chef:UpdateChef)-> JsonValue {
     use schema::smor_chef_profiles::dsl::*;
-    let results = diesel::update(&chef)
+    let results = diesel::update(smor_chef_profiles.filter(user_id.eq(&chef.user_id)))
                                                 .set((
                                                     nickname.eq(&chef.nickname),
                                                     dish.eq(&chef.dish),
