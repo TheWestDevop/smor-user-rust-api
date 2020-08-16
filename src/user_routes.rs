@@ -61,7 +61,6 @@ pub fn update_profile(data:Form<UpdateUserForm>,_auth:UserApiKey) -> JsonValue {
 pub fn update_chef_bio(data:Form<UpdateChefForm>,_auth:UserApiKey) -> JsonValue {
     let connect = establish_connection();
     let  profile = UpdateChef::new(
-                                    data.id,
                                     data.user_id.to_string(),
                                     data.nickname.to_string(),
                                     data.dish.to_string(),

@@ -177,10 +177,9 @@ pub fn establish_connection() -> PgConnection {
  }
 
 
- #[derive(Identifiable,Debug)]
- #[table_name="smor_chef_profiles"]
+//  #[derive(Identifiable,Debug)]
+//  #[table_name="smor_chef_profiles"]
  pub struct UpdateChef{
-  pub id: i32,
   pub user_id: String,
   pub nickname: String,
   pub dish: String,
@@ -194,7 +193,6 @@ pub fn establish_connection() -> PgConnection {
 }
 impl UpdateChef {
   pub fn new(
-    id:i32,
     user_id:String,
     nickname: String,
     dish:String,
@@ -207,7 +205,6 @@ impl UpdateChef {
   ) -> UpdateChef {
     let update_at = Local::now().to_string();
     UpdateChef {
-      id,
       user_id,
       nickname,
       dish,
@@ -254,7 +251,6 @@ impl Search_Chef {
 }
 #[derive(FromForm,Debug)]
 pub struct UpdateChefForm{
-  pub id: i32,
   pub user_id: String,
   pub nickname: String,
   pub dish: String,
