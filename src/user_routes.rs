@@ -64,7 +64,7 @@ pub fn update_chef_bio(data:Form<UpdateChefForm>,_auth:UserApiKey) -> JsonValue 
                                     data.user_id.to_string(),
                                     data.nickname.to_string(),
                                     data.dish.to_string(),
-                                    data.dish.to_string(),
+                                    data.details.to_string(),
                                     data.rating,
                                     data.icon.to_string(),
                                     data.experience.to_string(),

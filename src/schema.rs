@@ -3,7 +3,7 @@ table! {
         id -> Int4,
         user_id -> Varchar,
         nickname -> Varchar,
-        dish -> Varchar,
+        dish -> Text,
         dish_cost -> Varchar,
         details -> Text,
         rating -> Int4,

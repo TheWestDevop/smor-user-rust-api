@@ -4,7 +4,7 @@ CREATE TABLE smor_chef_profiles (
   id SERIAL PRIMARY KEY,
   user_id VARCHAR(255) NOT NULL,
   nickname VARCHAR(255) NOT NULL,
-  dish VARCHAR(255) NOT NULL,
+  dish TEXT NOT NULL,
   dish_cost VARCHAR(255) NOT NULL,
   details TEXT NOT NULL,
   rating Int NOT NULL DEFAULT 1,
