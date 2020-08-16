@@ -245,12 +245,20 @@ pub fn register_chef_detail(con:PgConnection,chef:NewChef) -> JsonValue {
     use schema::smor_chef_profiles;
     let result = diesel::insert_into(smor_chef_profiles::table)
                             .values(chef)
-                            .get_result::<Chef>(&con)
-                            .expect("Error creating new chef profile");
-     json!({
-         "status":true,
-         "data":result
-     })                       
+                            .get_result::<Chef>(&con);
+        match result {
+              Ok(r) => json!({
+                     "status": true,
+                      "data":r
+                       }),
+              Err(err) =>{ 
+                        println!("Server Error {:?}", err);
+                        json!({
+                        "status": false,
+                        "message":"Server Error, Kindly try again"
+                       })
+                   }
+            }                       
 }
 pub fn update_user_profile(con:PgConnection,user:UpdateUser) -> JsonValue {
     use schema::smor_users::dsl::*;
@@ -262,26 +270,42 @@ pub fn update_user_profile(con:PgConnection,user:UpdateUser) -> JsonValue {
                                                     email.eq(&user.email),
                                                     update_at.eq(&user.update_at)
                                                 ))
-                                                .get_result::<User>(&con)
-                                                .expect("Error updating user profile");
-    json!({
-                "status": true,
-                "data":results
-            })
+                                                .get_result::<User>(&con);
+        match results {
+             Ok(r) => json!({
+                    "status": true,
+                    "data":r
+                    }),
+                    Err(err) => { 
+                        println!("Server Error {:?}", err);
+                        json!({
+                        "status": false,
+                        "message":"Server Error, Kindly try again"
+                       })
+                   }
+            }                                       
 }
 pub fn update_user_avatar(con:PgConnection,url:String,uid:String) -> JsonValue {
     use schema::smor_users::dsl::*;
 
-   diesel::update(smor_users.filter(user_id.eq(&uid)))
+   let result = diesel::update(smor_users.filter(user_id.eq(&uid)))
                                                 .set(
                                                     avatar.eq(&url),
                                                 )
-                                                .execute(&con)
-                                                .expect("Error updating user profile");
-    json!({
-                "status": true,
-                "data":"Profile Picture Uploaded successfully"
-            })
+                                                .execute(&con);
+            match result {
+                Ok(r) => json!({
+                    "status": true,
+                    "data":"Profile Picture Uploaded successfully"
+                }),
+                Err(err) => { 
+                    println!("Server Error {:?}", err);
+                    json!({
+                    "status": false,
+                    "message":"Server Error, Kindly try again"
+                   })
+               }
+            }
 }
 pub fn update_chef_profile(con:PgConnection,chef:UpdateChef)-> JsonValue {
     use schema::smor_chef_profiles::dsl::*;
@@ -296,12 +320,22 @@ pub fn update_chef_profile(con:PgConnection,chef:UpdateChef)-> JsonValue {
                                                     lga.eq(&chef.lga),
                                                     update_at.eq(&chef.update_at)
                                                 ))
-                                                .get_result::<Chef>(&con)
-                                                .expect("Error updating chef profile");
-    json!({
-                "status": true,
-                "data":results
-            })
+                                                .get_result::<Chef>(&con);
+                                                // .expect("Error updating chef profile");
+    match results {
+        Ok(r) => json!({
+            "status": true,
+            "data":r
+        }),
+        Err(err) =>{ 
+            println!("Server Error {:?}", err);
+            json!({
+            "status": false,
+            "message":"Server Error, Kindly try again"
+           })
+       }
+    }
+    
 }
 pub fn disable_enable_availability(con:PgConnection,uid:String,status:bool)-> JsonValue {
     use schema::smor_chef_profiles::dsl::*;
