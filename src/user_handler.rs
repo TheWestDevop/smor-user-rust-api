@@ -387,6 +387,10 @@ pub fn get_chef(con:PgConnection,uid:String) -> JsonValue {
     use schema::smor_chef_profiles::dsl::*;
     let profile_result = smor_chef_profiles.filter(schema::smor_chef_profiles::dsl::user_id.eq(&uid))
     .load::<Chef>(&con).expect("Error unable to fetch chef profile");
+    let iat = Local::now().to_string();
+                        let user = format!("{}{}{}",results[0].name,results[0].email,results[0].user_id).to_string();
+                        let u_role =  &results[0].role.to_string();
+                        let token = generate_token(&user,&iat,&u_role);
     return json!(
         {
         "status":true,
@@ -397,7 +401,7 @@ pub fn get_chef(con:PgConnection,uid:String) -> JsonValue {
             "avatar":results[0].avatar,
             "phone":results[0].phone,
             "email":results[0].email,
-            "role":results[0].role,
+            "token":token,
             "nickname":profile_result[0].nickname,
             "dish":profile_result[0].dish,
             "dish_cost":profile_result[0].dish_cost,
