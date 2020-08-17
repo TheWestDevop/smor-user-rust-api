@@ -389,7 +389,7 @@ pub fn get_chef(con:PgConnection,uid:String) -> JsonValue {
     .load::<Chef>(&con).expect("Error unable to fetch chef profile");
     return json!(
         {
-        "status":false,
+        "status":true,
         "data":{
             "id":results[0].id,
             "user_id":results[0].user_id,
