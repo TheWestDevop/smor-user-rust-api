@@ -60,7 +60,7 @@ pub fn login_admin(con:PgConnection,user:String,password:String) -> JsonValue {
 
                 json!(
                     {
-                    "status":false,
+                    "status":true,
                     "data":{
                         "id":results[0].id,
                         "user_id":results[0].user_id,
