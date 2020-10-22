@@ -17,8 +17,8 @@ use std::env;
 pub fn sendMail2User(email:String,subject:String,body:String) -> Result<lettre::smtp::response::Response, lettre::smtp::error::Error>{
 
     dotenv().ok();
-    let MAIL_ACCOUNT = env::var("MAIL_ACCOUNT").expect("Error loading GMAIL_ACCOUNT. \n Company email is required!!! .");
-    let MAIL_PASSWORD = env::var("MAIL_PASSWORD").expect("Error loading GMAIL_PASSWORD. \n Company email password is required!!! .");
+    let mail_account = env::var("MAIL_ACCOUNT").expect("Error loading GMAIL_ACCOUNT. \n Company email is required!!! .");
+    let mail_password = env::var("MAIL_PASSWORD").expect("Error loading GMAIL_PASSWORD. \n Company email password is required!!! .");
 
 
     let email = SendableEmail::new(
@@ -45,7 +45,7 @@ pub fn sendMail2User(email:String,subject:String,body:String) -> Result<lettre::
     ).unwrap()
         .authentication_mechanism(Mechanism::Login)
         .credentials(Credentials::new(
-            MAIL_ACCOUNT.to_string(), MAIL_PASSWORD.to_string()
+            mail_account.to_string(), mail_password.to_string()
         ))
         .connection_reuse(ConnectionReuseParameters::ReuseUnlimited)
         .transport();

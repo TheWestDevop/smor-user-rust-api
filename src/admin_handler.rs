@@ -39,7 +39,7 @@ pub fn login_admin(con:PgConnection,user:String,password:String) -> JsonValue {
     let clean_password = password.trim();
     let clean_email = user.trim();
 
-    print!(" email --> {} password --> {} ",clean_email,clean_password);
+    // print!(" email --> {} password --> {} ",clean_email,clean_password);
 
     if clean_password.is_empty() || clean_email.is_empty() {
         json!({
@@ -49,55 +49,63 @@ pub fn login_admin(con:PgConnection,user:String,password:String) -> JsonValue {
     } else {
 
     use schema::smor_users::dsl::*;
-    let results = smor_users.filter(email.eq(clean_email).and(role.eq(2)).or(role.eq(3)).and(status.eq(true)))
+    let results = smor_users.filter(email.eq(clean_email))
     .load::<User>(&con).expect("Error unable to fetch user");
+        // print!("query result  {:?}",results);
     if results.is_empty() {
         json!({
             "status":false,
             "message":"invalid email or password"
         })
     } else {
+        if results[0].role == 1 || !results[0].status  {
+            json!({
+                "status":false,
+                "message":"invalid email or password"
+            })
+        }else{
+            let verify_admin = verify(clean_password, &results[0].password);
+                match verify_admin {
+                    Ok(valid) => {
+                        if valid {
+                            let iat = Local::now().to_string();
+                            let user = format!("{}{}{}",results[0].name,results[0].email,results[0].user_id).to_string();
+                            let u_role =  &results[0].role.to_string();
+                            let token = generate_token(&user,&iat,&u_role);
 
-      let verify_admin = verify(clean_password, &results[0].password);
+                            json!(
+                                {
+                                "status":true,
+                                "data":{
+                                    "id":results[0].id,
+                                    "user_id":results[0].user_id,
+                                    "name":results[0].name,
+                                    "avatar":results[0].avatar,
+                                    "phone":results[0].phone,
+                                    "email":results[0].email,
+                                    "role":results[0].role,
+                                    "status":results[0].status,
+                                    "token":token
+                                }
+                            }
+                        )
+                        }else{
+                            json!({
+                                "status":false,
+                                "message":"Invalid email or password"
+                            })
+                        }
+                            
+                        
+                    },
+                    Err(_) => json!({
+                        "status":false,
+                        "message":"Invalid email or password"
+                    })
+                } 
+        }
+   
       
-      match verify_admin {
-          Ok(valid) => {
-               if valid {
-                let iat = Local::now().to_string();
-                let user = format!("{}{}{}",results[0].name,results[0].email,results[0].user_id).to_string();
-                 let u_role =  &results[0].role.to_string();
-                let token = generate_token(&user,&iat,&u_role);
-
-                json!(
-                    {
-                    "status":true,
-                    "data":{
-                        "id":results[0].id,
-                        "user_id":results[0].user_id,
-                        "name":results[0].name,
-                        "avatar":results[0].avatar,
-                        "phone":results[0].phone,
-                        "email":results[0].email,
-                        "role":results[0].role,
-                        "status":results[0].status,
-                        "token":token
-                    }
-                 }
-               )
-               }else{
-                json!({
-                    "status":false,
-                    "message":"Invalid email or password"
-                })
-               }
-                
-            
-          },
-          Err(_) => json!({
-              "status":false,
-              "message":"Invalid email or password"
-          })
-      } 
     }
   }
 }
