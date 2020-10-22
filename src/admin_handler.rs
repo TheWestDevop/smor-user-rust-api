@@ -11,7 +11,7 @@ pub fn all_users(con:PgConnection) -> JsonValue {
 
     use schema::smor_users::dsl::*;
 
-    let results =  smor_users.order(id.desc()).load::<User>(&con).expect("Error unable to fetch user");
+    let results =  smor_users.filter(role.eq(1)).order(id.desc()).load::<User>(&con).expect("Error unable to fetch user");
     return json!({
         "status":true,
         "data":results
