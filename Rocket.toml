@@ -2,7 +2,7 @@
  [development]
  address = "localhost"
  port = 8000
- keep_alive = 0
+ keep_alive = 5
  log = "normal"
  limits = { forms = 32768 }
 
@@ -12,7 +12,7 @@
 
  address = "0.0.0.0"
  port = 8000
- keep_alive = 0
+ keep_alive = 5
  log = "normal"
  limits = { forms = 32768 }
 
@@ -21,6 +21,6 @@
  [production]
  address = "0.0.0.0"
  port = 8000
- keep_alive = 0
+ keep_alive = 5
  log = "critical"
  limits = { forms = 32768 }

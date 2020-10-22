@@ -39,7 +39,7 @@ pub fn login_admin(con:PgConnection,user:String,password:String) -> JsonValue {
     let clean_password = password.trim();
     let clean_email = user.trim();
 
-    // print!(" email --> {} password --> {} ",clean_email,clean_password);
+    print!(" email --> {} password --> {} ",clean_email,clean_password);
 
     if clean_password.is_empty() || clean_email.is_empty() {
         json!({
