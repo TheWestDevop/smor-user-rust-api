@@ -20,6 +20,11 @@ pub fn users(_auth:NormalAdminApiKey) -> JsonValue {
     let connect = establish_connection();
    return all_users(connect);
 }
+#[get("/all/staff")]
+pub fn staffs(_auth:NormalAdminApiKey) -> JsonValue {
+    let connect = establish_connection();
+   return all_staffs(connect);
+}
 #[get("/all/chefs/profiles")]
 pub fn chefs(_auth:NormalAdminApiKey) -> JsonValue {
     let connect = establish_connection();
@@ -104,6 +109,6 @@ pub fn bad_request() -> JsonValue {
 pub fn unprocessable_entity() -> JsonValue {
     json!({
         "status": false,
-        "message": "Whoops! Looks like you send a bad request."
+        "message": "Whoops! Looks like you send a processable entity."
     })
 }

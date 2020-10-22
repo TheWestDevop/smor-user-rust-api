@@ -17,6 +17,16 @@ pub fn all_users(con:PgConnection) -> JsonValue {
         "data":results
     })
 }
+pub fn all_staffs(con:PgConnection) -> JsonValue {
+
+    use schema::smor_users::dsl::*;
+
+    let results =  smor_users.filter(role.eq(2).or(role.eq(3)).or(role.eq(4))).order(id.desc()).load::<User>(&con).expect("Error unable to fetch user");
+    return json!({
+        "status":true,
+        "data":results
+    })
+}
 pub fn all_chef_profiles(con:PgConnection) -> JsonValue {
     use schema::smor_chef_profiles::dsl::*;
     let results =  smor_chef_profiles.order(id.desc()).load::<Chef>(&con).expect("Error unable to fetch chefs profile");

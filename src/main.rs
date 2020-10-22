@@ -47,6 +47,7 @@ fn main() {
         admin_routes::index,
         admin_routes::r_login_admin, 
         admin_routes::users,
+        admin_routes::staffs,
         admin_routes::chefs,
         admin_routes::ban_unban_user,
         admin_routes::delete_user_account,
