@@ -52,22 +52,17 @@ pub fn login_admin(con:PgConnection,user:String,password:String) -> JsonValue {
     let results = smor_users.filter(email.eq(clean_email))
     .load::<User>(&con).expect("Error unable to fetch user");
         // print!("query result  {:?}",results);
-    if results.is_empty() {
+
+    if results.is_empty() || results[0].role == 1 || !results[0].status {
         json!({
             "status":false,
             "message":"invalid email or password"
         })
     } else {
-        if results[0].role == 1 || !results[0].status  {
-            json!({
-                "status":false,
-                "message":"invalid email or password"
-            })
-        }else{
             let verify_admin = verify(clean_password, &results[0].password);
                 match verify_admin {
                     Ok(valid) => {
-                        if valid {
+                        if valid  {
                             let iat = Local::now().to_string();
                             let user = format!("{}{}{}",results[0].name,results[0].email,results[0].user_id).to_string();
                             let u_role =  &results[0].role.to_string();
@@ -87,8 +82,7 @@ pub fn login_admin(con:PgConnection,user:String,password:String) -> JsonValue {
                                     "status":results[0].status,
                                     "token":token
                                 }
-                            }
-                        )
+                            })
                         }else{
                             json!({
                                 "status":false,
@@ -100,11 +94,9 @@ pub fn login_admin(con:PgConnection,user:String,password:String) -> JsonValue {
                     },
                     Err(_) => json!({
                         "status":false,
-                        "message":"Invalid email or password"
+                        "message":"email or password verification error"
                     })
-                } 
-        }
-   
+        } 
       
     }
   }

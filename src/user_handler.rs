@@ -14,7 +14,7 @@ use std::env;
 
 
 
-pub fn sendMail2User(email:String,subject:String,body:String) -> Result<lettre::smtp::response::Response, lettre::smtp::error::Error>{
+pub fn send_mail2_user(email:String,subject:String,body:String) -> Result<lettre::smtp::response::Response, lettre::smtp::error::Error>{
 
     dotenv().ok();
     let mail_account = env::var("MAIL_ACCOUNT").expect("Error loading GMAIL_ACCOUNT. \n Company email is required!!! .");
@@ -68,9 +68,9 @@ pub fn login_user(con:PgConnection,user:String,password:String,app:String) -> Js
         })
     }else{
     use schema::smor_users::dsl::*;
-    let results = smor_users.filter(email.eq(clean_email).and(role.eq(1)).or(role.eq(2)).or(role.eq(3)).and(status.eq(true)))
+    let results = smor_users.filter(email.eq(clean_email))
     .load::<User>(&con).expect("Error unable to fetch user");
-    if results.is_empty() {
+    if results.is_empty()  {
         json!({
             "status":false,
             "message":"invalid email or password"
@@ -87,7 +87,7 @@ pub fn login_user(con:PgConnection,user:String,password:String,app:String) -> Js
                         let token = generate_token(&user,&iat,&u_role);
                         match clean_app.as_str() {
                             "user" => {
-                                let mail_user = sendMail2User(
+                                let mail_user = send_mail2_user(
                                     results[0].email.to_string(),
                                     "Account Login".to_string(),
                                     "Your smorfarm account has been logged in".to_string()
@@ -294,7 +294,7 @@ pub fn update_user_avatar(con:PgConnection,url:String,uid:String) -> JsonValue {
                                                 )
                                                 .execute(&con);
             match result {
-                Ok(r) => json!({
+                Ok(_r) => json!({
                     "status": true,
                     "data":"Profile Picture Uploaded successfully"
                 }),
