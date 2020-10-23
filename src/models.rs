@@ -61,7 +61,42 @@ pub fn establish_connection() -> PgConnection {
         }
         
     }
-}
+  }
+  #[derive(Insertable,Debug)]
+  #[table_name="smor_users"]
+  pub struct NewStaff{
+    pub user_id: String,
+    pub name: String,
+    pub phone: String,
+    pub avatar: String,
+    pub email: String,
+    pub password: String,
+    pub role:i32,
+    pub created_at: String,
+    pub update_at: String,
+  } 
+  impl NewStaff {
+   pub fn new(name: String, phone: String,avatar:String,email: String, password: String,role:i32) -> NewStaff {
+         let created_at = Local::now().to_string();
+         let update_at = Local::now().to_string();
+         let user_id =  Uuid::new_v5(
+             &Uuid::NAMESPACE_OID,
+             format!("{}-{}-{}",name,phone,password).to_string().as_bytes()
+         ).to_string();
+         NewStaff {
+          user_id,
+          name,
+          phone,
+          avatar,
+          email,
+          password,
+          role,
+          created_at,
+          update_at,
+        }
+        
+    }
+  }
   #[derive(Identifiable,Debug)]
    #[table_name="smor_users"]
   pub struct UpdateUser{
@@ -289,6 +324,15 @@ pub struct NewUserForm{
   pub phone: String,
   pub email: String,
   pub password: String,
+}
+#[derive(FromForm,Debug)]
+pub struct NewStaffForm{
+  pub name: String,
+  pub phone: String,
+  pub avatar: String,
+  pub email: String,
+  pub password: String,
+  pub role: i32,
 }
 
 #[derive(FromForm,Debug)]

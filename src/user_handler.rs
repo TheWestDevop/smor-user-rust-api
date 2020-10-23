@@ -241,6 +241,7 @@ pub fn register_user(con:PgConnection,n_name:String,n_phone:String,n_email:Strin
            })
     }  
 }
+
 pub fn register_chef_detail(con:PgConnection,chef:NewChef) -> JsonValue {
     use schema::smor_chef_profiles;
     let result = diesel::insert_into(smor_chef_profiles::table)

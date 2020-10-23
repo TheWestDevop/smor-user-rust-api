@@ -36,6 +36,11 @@ pub fn r_login_admin(data:Form<AdminLogin>) -> JsonValue{
     let connect = establish_connection();
    return login_admin(connect,data.email.to_string(),data.password.to_string());
 }
+#[put("/add/staff", data="<data>")]
+pub fn add_staff(data:Form<NewStaffForm>) -> JsonValue{
+    let connect = establish_connection();
+   return register_staff(connect,data.name.to_string(),data.phone.to_string(),data.avatar.to_string(),data.email.to_string(),data.password.to_string(),data.role);
+}
 #[put("/grant/revoke", data="<user_data>")]
 pub fn grant_revoke_admin(user_data:Form<UpdateUserForm>,_auth:SuperAdminApiKey) -> JsonValue{
     let connect = establish_connection();
