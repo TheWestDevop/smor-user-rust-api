@@ -39,14 +39,14 @@ pub fn r_login_admin(data:Form<AdminLogin>) -> JsonValue{
 #[put("/grant/revoke", data="<user_data>")]
 pub fn grant_revoke_admin(user_data:Form<UpdateUserForm>,_auth:SuperAdminApiKey) -> JsonValue{
     let connect = establish_connection();
-    let user = UpdateUser::new(user_data.id, user_data.user_id.to_string(), user_data.name.to_string(), user_data.phone.to_string(), user_data.avatar.to_string(), user_data.email.to_string(),  user_data.role, user_data.status, user_data.created_at.to_string());
+    let user = UpdateUser::new(user_data.id, user_data.user_id.to_string(), user_data.name.to_string(), user_data.phone.to_string(), user_data.avatar.to_string(), user_data.email.to_string(),  user_data.role, user_data.status);
    return grant_admin_and_revoke_admin(connect,user);
 }
 
 #[patch("/ban/unban", data="<user_data>")]
 pub fn ban_unban_user(user_data:Form<UpdateUserForm>,_auth:SuperAdminApiKey) -> JsonValue{
     let connect = establish_connection();
-    let user = UpdateUser::new(user_data.id, user_data.user_id.to_string(), user_data.name.to_string(), user_data.phone.to_string(), user_data.avatar.to_string(), user_data.email.to_string(),  user_data.role, user_data.status, user_data.created_at.to_string());
+    let user = UpdateUser::new(user_data.id, user_data.user_id.to_string(), user_data.name.to_string(), user_data.phone.to_string(), user_data.avatar.to_string(), user_data.email.to_string(),  user_data.role, user_data.status);
    return ban_and_unban_user(connect,user);
 }
 

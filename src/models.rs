@@ -73,11 +73,10 @@ pub fn establish_connection() -> PgConnection {
     pub email: String,
     pub role: i32,
     pub status:bool,
-    pub created_at: String,
     pub update_at: String,
 } 
   impl UpdateUser {
-   pub fn new(id:i32,user_id:String,name: String,phone:String,avatar: String,email: String, role:i32, status:bool, created_at:String) -> UpdateUser {
+   pub fn new(id:i32,user_id:String,name: String,phone:String,avatar: String,email: String, role:i32, status:bool) -> UpdateUser {
          let update_at = Local::now().to_string();
          UpdateUser {
           id,
@@ -88,7 +87,6 @@ pub fn establish_connection() -> PgConnection {
           email,
           role,
           status,
-          created_at,
           update_at,
         }
         
@@ -284,8 +282,6 @@ pub struct UpdateUserForm{
   pub email: String,
   pub role: i32,
   pub status:bool,
-  pub created_at: String,
-  pub update_at: String,
 }
 #[derive(FromForm,Debug)]
 pub struct NewUserForm{

@@ -52,7 +52,6 @@ pub fn update_profile(data:Form<UpdateUserForm>,_auth:UserApiKey) -> JsonValue {
                                     data.email.to_string(),
                                     data.role,
                                     data.status,
-                                    data.created_at.to_string()
                                 );
    return update_user_profile(connect,profile);
 }
