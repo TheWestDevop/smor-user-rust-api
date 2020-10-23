@@ -126,10 +126,16 @@ pub fn ban_and_unban_user(con:PgConnection,n_user:UpdateUser) -> JsonValue {
                                                 ))
                                                 .execute(&con)
                                                 .expect("Error updating product");
-    return json!({
-                "status": true,
-                "data":"User successfully ban"
-            })
+    return match &n_user.status {
+        true => json!({
+            "status": true,
+            "data":"User successfully unban"
+        }),
+        false => json!({
+            "status": true,
+            "data":"User successfully ban"
+        })
+    }
 }
 pub fn delete_user(con:PgConnection,uid:String) -> JsonValue {
     use schema::smor_users::dsl::*;
