@@ -178,11 +178,11 @@ pub fn ban_and_unban_user(con: PgConnection, n_user: UpdateUser) -> JsonValue {
     return match &n_user.status {
         true => json!({
             "status": true,
-            "data":"User successfully unban"
+            "data":"User account successfully unlocked"
         }),
         false => json!({
             "status": true,
-            "data":"User successfully ban"
+            "data":"User account successfully locked"
         }),
     };
 }
