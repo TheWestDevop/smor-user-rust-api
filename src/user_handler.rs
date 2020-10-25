@@ -301,6 +301,7 @@ pub fn update_user_profile(con:PgConnection,user:UpdateUser) -> JsonValue {
                    }
             }                                       
 }
+
 pub fn update_user_avatar(con:PgConnection,url:String,uid:String) -> JsonValue {
     use schema::smor_users::dsl::*;
 

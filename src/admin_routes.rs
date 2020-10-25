@@ -41,6 +41,21 @@ pub fn add_staff(data:Form<NewStaffForm>) -> JsonValue{
     let connect = establish_connection();
    return register_staff(connect,data.name.to_string(),data.phone.to_string(),data.avatar.to_string(),data.email.to_string(),data.password.to_string(),data.role);
 }
+#[patch("/update/staff", data="<data>")]
+pub fn update_staff(data:Form<UpdateUserForm>,_auth:UserApiKey) -> JsonValue {
+    let connect = establish_connection();
+    let  profile = UpdateUser::new(
+                                    data.id,
+                                    data.user_id.to_string(),
+                                    data.name.to_string(),
+                                    data.phone.to_string(),
+                                    data.avatar.to_string(),
+                                    data.email.to_string(),
+                                    data.role,
+                                    data.status,
+                                );
+   return update_staff_profile(connect,profile);
+}
 #[put("/grant/revoke", data="<user_data>")]
 pub fn grant_revoke_admin(user_data:Form<UpdateUserForm>,_auth:SuperAdminApiKey) -> JsonValue{
     let connect = establish_connection();

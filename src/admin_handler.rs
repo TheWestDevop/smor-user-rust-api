@@ -211,3 +211,38 @@ pub fn delete_chef_profile(con: PgConnection, uid: String) {
         .execute(&con)
         .expect("Error deleting user chef profile");
 }
+pub fn update_staff_profile(con:PgConnection,user:UpdateUser) -> JsonValue {
+    use schema::smor_users::dsl::*;
+
+    let results = diesel::update(&user)
+                                                .set((
+                                                    name.eq(&user.name),
+                                                    phone.eq(&user.phone),
+                                                    email.eq(&user.email),
+                                                    role.eq(&user.role),
+                                                    update_at.eq(&user.update_at)
+                                                ))
+                                                .get_result::<User>(&con);
+        match results {
+             Ok(r) => json!({
+                    "status": true,
+                    "data":{
+                        "id":r.id,
+                        "user_id":r.user_id,
+                        "name":r.name,
+                        "avatar":r.avatar,
+                        "phone":r.phone,
+                        "email":r.email,
+                        "role":r.role,
+                        "status":r.status,
+                    }
+                    }),
+                    Err(err) => { 
+                        println!("Server Error {:?}", err);
+                        json!({
+                        "status": false,
+                        "message":"Server Error, Kindly Try Again"
+                       })
+                   }
+            }                                       
+}
