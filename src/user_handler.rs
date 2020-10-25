@@ -282,7 +282,15 @@ pub fn update_user_profile(con:PgConnection,user:UpdateUser) -> JsonValue {
         match results {
              Ok(r) => json!({
                     "status": true,
-                    "data":r
+                    "data":{
+                        "id":r.id,
+                        "user_id":r.user_id,
+                        "name":r.name,
+                        "avatar":r.avatar,
+                        "phone":r.phone,
+                        "email":r.email,
+                        "status":r.status,
+                    }
                     }),
                     Err(err) => { 
                         println!("Server Error {:?}", err);
