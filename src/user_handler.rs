@@ -75,9 +75,15 @@ pub fn login_user(con:PgConnection,user:String,password:String,app:String) -> Js
             "status":false,
             "message":"invalid email or password"
         })
-    } else {
-      let verify_admin = verify(clean_password, &results[0].password);
-      match verify_admin {
+    }else {
+        if !results[0].status {
+            json!({
+                "status":false,
+                "message":"Your account has been locked, contact customer care"
+            })
+        }else{
+         let verify_admin = verify(clean_password, &results[0].password);
+         match verify_admin {
           Ok(valid) => {
                match valid {
                 true => {
@@ -199,6 +205,7 @@ pub fn login_user(con:PgConnection,user:String,password:String,app:String) -> Js
               "message":"Invalid email or password"
           })
       } 
+      }
     }
   }
 }

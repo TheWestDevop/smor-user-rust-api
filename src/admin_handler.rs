@@ -63,12 +63,18 @@ pub fn login_admin(con: PgConnection, user: String, password: String) -> JsonVal
             .expect("Error unable to fetch user");
         // print!("query result  {:?}",results);
 
-        if results.is_empty() || results[0].role == 1 || !results[0].status {
+        if results.is_empty() || results[0].role == 1 {
             json!({
                 "status":false,
                 "message":"invalid email or password"
             })
         } else {
+            if !results[0].status {
+                json!({
+                    "status":false,
+                    "message":"Your account has been locked, contact super administrator"
+                })
+            }else{
             let verify_admin = verify(clean_password, &results[0].password);
             match verify_admin {
                 Ok(valid) => {
@@ -108,6 +114,7 @@ pub fn login_admin(con: PgConnection, user: String, password: String) -> JsonVal
                     "status":false,
                     "message":"email or password verification error"
                 }),
+            }
             }
         }
     }
